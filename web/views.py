@@ -14,16 +14,20 @@ from sqlalchemy.orm import sessionmaker
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
+print('loading')
+
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
 
 APPLICATION_NAME = "Udacity Catalog App"
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 blueprint = make_google_blueprint(
-    client_id=json.loads(open('client_secrets.json',
+    client_id=json.loads(open('/var/www/html/catalog/web/client_secrets.json',
                          'r').read())['web']['client_id'],
-    client_secret=json.loads(open('client_secrets.json',
+    client_secret=json.loads(open('/var/www/html/catalog/web/client_secrets.json',
                              'r').read())['web']['client_secret'],
     scope=["profile", "email"]
 )
@@ -422,6 +426,9 @@ def deleteUser(id):
     session.commit()
     return "user deleted"
 
+def sayhi():
+    return "hi"
+
 
 def getUserID(email):
     try:
@@ -431,8 +438,10 @@ def getUserID(email):
         return None
 
 if __name__ == '__main__':
-        app.secret_key = json.loads(
-            open('client_secrets.json', 'r').read())['web']['client_secret']
+        # app.secret_key = json.loads(
+        #     open('/var/www/html/catalog/web/client_secrets.json', 'r').read())['web']['client_secret']
+        app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+        # app.config['SESSION_TYPE'] = 'filesystem'
         app.debug = True
         # app.run(host='127.0.0.1', port=9000)
-        app.run(host='0.0.0.0', port=5001)
+        app.run(host='0.0.0.0', port=80)
