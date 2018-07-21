@@ -14,7 +14,7 @@ from sqlalchemy.orm import sessionmaker
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
-print('loading1')
+# print('loading1')
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
@@ -35,7 +35,7 @@ app.register_blueprint(blueprint, url_prefix="/login")
 
 # alternate logging system
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.ERROR)
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
 engine = create_engine('postgresql://catalog:catalog@127.0.0.1:5432/catalog')
 Base.metadata.bind = engine
@@ -47,7 +47,10 @@ session = DBSession()
 
 @app.route('/')
 def splash():
-    print('inroot')
+    req_data = request.get_json()
+    logging.INFO(req_data)
+
+    # print('inroot')
     if (login_session.get('state')):
         return showLogin()
     else:
@@ -56,7 +59,7 @@ def splash():
 
 @app.route("/login")
 def preLogin():
-    print('loginattempt')
+    # print('loginattempt')
     return render_template('login.html')
 
 
@@ -71,7 +74,7 @@ def showLogin():
         login_session['access_token'] = login_session['state']
         return redirect(url_for("google.login"))
     resp = google.get("/oauth2/v2/userinfo")
-    print(resp.json())
+    # print(resp.json())
     login_session['google'] = resp.json()
     login_session['username'] = resp.json()['name']
     login_session['email'] = resp.json()['email']
@@ -141,7 +144,7 @@ def gdisconnect():
         failed = True
 
     if failed is True:
-        print('unable to remove all credentials')
+        # print('unable to remove all credentials')
 
     if result['status'] == '200':
         logging.info(login_session)
@@ -196,10 +199,10 @@ def newItem():
             return d
 
         decoded_item = itemDecoder(code)
-        print(decoded_item['name'])
-        # print(decoded_item['user_id'])
-        print(decoded_item['description'])
-        print(decoded_item['category'])
+        # print(decoded_item['name'])
+        print(decoded_item['user_id'])
+        # print(decoded_item['description'])
+        # print(decoded_item['category'])
 
         makeANewItem(
             name=decoded_item['name'],
@@ -404,7 +407,7 @@ def deleteItem(id):
 
 
 def createUser(login_session):
-    print('creating new user...')
+    # print('creating new user...')
     username = login_session['username']
     if not login_session['username']:
         username = login_session['email'].split('@')[0]

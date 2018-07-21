@@ -1,33 +1,36 @@
 # Simple Catalog App
 
-## Setup
+## IP Address
 
-### Clone Repo
+52.24.66.168
 
-Clone this repo somewhere on your own machine
+## SSH Port for reviewer access
 
-### Install Vagrant
+2200
 
-In order to run this app you must first install vagrant on your machine
+## Website URL
 
-https://www.vagrantup.com/downloads.html
+http://52.24.66.168.xip.io
 
-### Open vagrantfile
+## Installed on Server
 
-Navigate to the vagrantfile in the vagrant directory in this repo and execute ```vagrant up```
-
-### Set up google app for Oauth2 user sign-in
-
-Then you must setup google's oauth2 for this app. To do so log in to google then navigate to https://console.developers.google.com
-
-Then create a new project by clicking select a project then clicking the plus sign.
-
-Once created, then click select a project again and select the project you just created. Then search for the google plus api and click enable. Once enabled set up an Oauth consent screen by first clicking credentials on the left, then Oauth consent screen tab. Once you have the Oauth consent screen saved, create credentials for a web application setting the javascript origin to: http://localhost:5001 and the authorized redirect URIs to http://localhost:5001/usercp and http://localhost:5001/login/google/authorized. Then activate Oauth2 authorization by searching for google+ api again and once found clicking 'TRY THIS API'. Then toggle Oauth 2.0 to 'ON' giving it the scopes for knowing who you are, your email address and your basic profile info. Then navigate back to your dashboard and download the json credentials for your app. Save this as client_secrets.json in the same directory as views.py and models.py of this repo.
-
-### Run Server
-
-Once you have the client_secrets.json saved, run the app by opening the vagrant environment you set up by running vagrant up, then navigate to views.py and execute ```python views.py```
+sudo apt-get -qqy install python python-pip
+sudo apt-get install apache2
+sudo pip2 install --upgrade pip
+sudo apt-get -qqy install make zip unzip postgresql
+sudo pip3 install flask packaging oauth2client redis passlib flask-httpauth
+sudo pip3 install sqlalchemy flask-sqlalchemy psycopg2 bleach requests
+sudo pip2 install flask packaging oauth2client redis passlib flask-httpauth
+sudo pip2 install sqlalchemy flask-sqlalchemy psycopg2 bleach requests
+sudo wget http://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+cd redis-stable
+make
+sudo make install
+sudo pip install httpauth
+sudo pip install --upgrade google-api-python-client
+sudo pip install flask-dance[sqla]
 
 ## Using the App
 
-Now open a browser and navigate to http://localhost:5001 and have fun using the app!
+Now open a browser and navigate to http://52.24.66.168.xip.io and have fun using the app!
