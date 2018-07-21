@@ -14,7 +14,7 @@ from sqlalchemy.orm import sessionmaker
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
-print('loading')
+print('loading1')
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
@@ -37,7 +37,7 @@ app.register_blueprint(blueprint, url_prefix="/login")
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.ERROR)
 
-engine = create_engine('sqlite:///itemswithusers.db')
+engine = create_engine('postgresql://catalog:catalog@127.0.0.1:5432/catalog')
 Base.metadata.bind = engine
 
 
@@ -47,6 +47,7 @@ session = DBSession()
 
 @app.route('/')
 def splash():
+    print('inroot')
     if (login_session.get('state')):
         return showLogin()
     else:
@@ -55,6 +56,7 @@ def splash():
 
 @app.route("/login")
 def preLogin():
+    print('loginattempt')
     return render_template('login.html')
 
 
