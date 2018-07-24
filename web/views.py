@@ -47,10 +47,6 @@ session = DBSession()
 
 @app.route('/')
 def splash():
-    req_data = request.get_json()
-    logging.INFO(req_data)
-
-    # print('inroot')
     if (login_session.get('state')):
         return showLogin()
     else:
@@ -144,7 +140,7 @@ def gdisconnect():
         failed = True
 
     if failed is True:
-        # print('unable to remove all credentials')
+        print('unable to remove all credentials')
 
     if result['status'] == '200':
         logging.info(login_session)
