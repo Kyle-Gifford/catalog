@@ -79,5 +79,5 @@ Now open a browser and navigate to http://52.24.66.168.xip.io and have fun using
 
 ## Resources Used
 
-udacity.com
+udacity.com  
 google.com
