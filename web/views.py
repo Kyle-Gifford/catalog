@@ -37,7 +37,7 @@ app.register_blueprint(blueprint, url_prefix="/login")
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
-engine = create_engine('postgresql://catalog:catalog@127.0.0.1:5432/catalog')
+engine = create_engine('postgresql://catalog:catalog@localhost:5432/catalog')
 Base.metadata.bind = engine
 
 
@@ -176,6 +176,7 @@ def newItem():
         return render_template('newItemForm.html', STATE=stategiven, LSU=lsu)
 
     elif request.method == 'POST':
+        print('IN POST')
         # check for authorization based on state token
         if request.args.get('state') != login_session['state']:
             response = make_response(
@@ -194,11 +195,15 @@ def newItem():
                 d[key] = value
             return d
 
+
         decoded_item = itemDecoder(code)
-        # print(decoded_item['name'])
-        print(decoded_item['user_id'])
-        # print(decoded_item['description'])
-        # print(decoded_item['category'])
+        print('V4 itemsV')
+        print(decoded_item['name'])
+        print(decoded_item['description'])
+        print(decoded_item['category'])
+        print(login_session['user_id'])
+        print('^4^')
+
 
         makeANewItem(
             name=decoded_item['name'],
@@ -390,6 +395,7 @@ def makeANewItem(name, description, category, user_id):
         description=description,
         category=category,
         user_id=user_id)
+
     session.add(item)
     session.commit()
     return jsonify(Item=item.serialize)
@@ -411,6 +417,7 @@ def createUser(login_session):
                    'email'])
     session.add(newUser)
     session.commit()
+
     user = session.query(User).filter_by(email=login_session['email']).one()
 
     return user.id

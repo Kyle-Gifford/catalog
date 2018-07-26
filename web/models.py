@@ -51,5 +51,6 @@ class Item(Base):
             'user_id': self.user_id
         }
 
-engine = create_engine('postgresql://catalog:catalog@127.0.0.1:5432/catalog')
+
+engine = create_engine('postgresql://catalog:catalog@localhost:5432/catalog')
 Base.metadata.create_all(engine)
