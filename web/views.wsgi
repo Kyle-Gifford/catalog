@@ -1,7 +1,7 @@
 import sys
 
 print('attempt')
-# 123
+# ***
 
 path = '/var/www/html/catalog/web'
 if path not in sys.path:
